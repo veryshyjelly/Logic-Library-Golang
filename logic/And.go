@@ -15,12 +15,21 @@ func And(conjuncts ...Sentence) *and {
 	return self
 }
 
-func (self and) Eq(other and) bool {
-	if len(self.conjuncts) != len(other.conjuncts) {
+func (self and) Eq(other interface{}) bool {
+	var x and
+	switch other.(type) {
+	case and:
+		x = other.(and)
+	case *and:
+		x = *other.(*and)
+	default:
 		return false
 	}
-	for k, v := range self.conjuncts {
-		if v != other.conjuncts[k] {
+	if len(self.conjuncts) != len(x.conjuncts) {
+		return false
+	}
+	for i, conjunct := range self.conjuncts {
+		if !conjunct.Eq(x.conjuncts[i]) {
 			return false
 		}
 	}
@@ -28,23 +37,21 @@ func (self and) Eq(other and) bool {
 }
 
 func (self and) String() string {
-	elems := make([]string, 0)
-	for _, conjunct := range self.conjuncts {
-		elems = append(elems, fmt.Sprint(conjunct))
-	}
-	return fmt.Sprintf("Add(%v)", strings.Join(elems, ", "))
+	result := fmt.Sprint(self.conjuncts)
+	return fmt.Sprintf("And(%v)", result)[1 : len(result)-1]
 }
 
 func (self *and) Add(conjunct Sentence) {
 	self.conjuncts = append(self.conjuncts, conjunct)
 }
 
-func (self *and) Evaluate(model map[string]bool) bool {
-	res := true
+func (self and) Evaluate(model map[string]bool) bool {
 	for _, conjunct := range self.conjuncts {
-		res = res && conjunct.Evaluate(model)
+		if !conjunct.Evaluate(model) {
+			return false
+		}
 	}
-	return res
+	return true
 }
 
 func (self and) Formula() string {
@@ -59,11 +66,11 @@ func (self and) Formula() string {
 }
 
 func (self and) Symbols() map[string]bool {
-	res := make(map[string]bool)
+	result := make(map[string]bool)
 	for _, conjunct := range self.conjuncts {
-		for k, v := range conjunct.Symbols() {
-			res[k] = v
+		for s, value := range conjunct.Symbols() {
+			result[s] = value
 		}
 	}
-	return res
+	return result
 }

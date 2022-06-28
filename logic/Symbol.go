@@ -14,8 +14,15 @@ func Symbol(name string) *symbol {
 	return self
 }
 
-func (self symbol) Eq(other symbol) bool {
-	return self.name == other.name
+func (self *symbol) Eq(other interface{}) bool {
+	switch other.(type) {
+	case symbol:
+		return self.name == other.(symbol).name
+	case *symbol:
+		return self.name == other.(*symbol).name
+	default:
+		return false
+	}
 }
 
 func (self symbol) String() string {

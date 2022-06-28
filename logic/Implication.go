@@ -15,8 +15,15 @@ func Implication(antecedent, consequent Sentence) *implication {
 	return self
 }
 
-func (self implication) Eq(other implication) bool {
-	return self.antecedent == self.antecedent && self.consequent == other.consequent
+func (self implication) Eq(other interface{}) bool {
+	switch other.(type) {
+	case implication:
+		return self.antecedent.Eq(other.(implication).antecedent) && self.consequent.Eq(other.(implication).consequent)
+	case *implication:
+		return self.antecedent.Eq(other.(*implication).antecedent) && self.consequent.Eq(other.(*implication).consequent)
+	default:
+		return false
+	}
 }
 
 func (self implication) String() string {
@@ -34,12 +41,5 @@ func (self implication) Formula() string {
 }
 
 func (self implication) Symbols() map[string]bool {
-	res := make(map[string]bool)
-	for k, v := range self.antecedent.Symbols() {
-		res[k] = v
-	}
-	for k, v := range self.consequent.Symbols() {
-		res[k] = v
-	}
-	return res
+	return Union(self.antecedent.Symbols(), self.consequent.Symbols())
 }

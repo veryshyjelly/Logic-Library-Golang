@@ -2,7 +2,7 @@ package main
 
 import (
 	. "Knowledge/logic"
-	. "Knowledge/modelCheck"
+	"Knowledge/modelCheck"
 	"fmt"
 )
 
@@ -11,6 +11,9 @@ func main() {
 	hagrid := Symbol("hagrid")
 	dumbldore := Symbol("dumbledore")
 
+	//mySentence := And(rain, hagrid)
+	//fmt.Println(mySentence.Formula())
+
 	knowledge := And(
 		Implication(Not(rain), hagrid),
 		Or(hagrid, dumbldore),
@@ -18,5 +21,11 @@ func main() {
 		dumbldore,
 	)
 
-	fmt.Println(ModelCheck(knowledge, rain))
+	one := Or(rain, hagrid)
+	two := Or(rain, hagrid)
+
+	fmt.Println(one.Eq(two))
+
+	fmt.Println(knowledge.Formula())
+	fmt.Println(modelCheck.ModelCheck(knowledge, rain))
 }

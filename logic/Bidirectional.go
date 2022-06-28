@@ -15,8 +15,15 @@ func Bidirectional(left, right Sentence) *bidirectional {
 	return self
 }
 
-func (self bidirectional) Eq(other bidirectional) bool {
-	return self.left == other.left && self.right == other.right
+func (self bidirectional) Eq(other interface{}) bool {
+	switch other.(type) {
+	case bidirectional:
+		return self.left.Eq(other.(bidirectional).left) && self.right.Eq(other.(bidirectional).right)
+	case *bidirectional:
+		return self.left.Eq(other.(*bidirectional).left) && self.right.Eq(other.(*bidirectional).right)
+	default:
+		return false
+	}
 }
 
 func (self bidirectional) String() string {
@@ -34,12 +41,5 @@ func (self bidirectional) Formula() string {
 }
 
 func (self bidirectional) Symbols() map[string]bool {
-	res := make(map[string]bool)
-	for k, v := range self.left.Symbols() {
-		res[k] = v
-	}
-	for k, v := range self.right.Symbols() {
-		res[k] = v
-	}
-	return res
+	return Union(self.left.Symbols(), self.right.Symbols())
 }

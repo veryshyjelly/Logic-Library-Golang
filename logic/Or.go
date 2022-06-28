@@ -15,12 +15,21 @@ func Or(disjuncts ...Sentence) *or {
 	return self
 }
 
-func (self or) Eq(other or) bool {
-	if len(self.disjuncts) != len(other.disjuncts) {
+func (self or) Eq(other interface{}) bool {
+	var x or
+	switch other.(type) {
+	case or:
+		x = other.(or)
+	case *or:
+		x = *other.(*or)
+	default:
 		return false
 	}
-	for k, v := range self.disjuncts {
-		if v != other.disjuncts[k] {
+	if len(self.disjuncts) != len(x.disjuncts) {
+		return false
+	}
+	for i, disjunct := range self.disjuncts {
+		if !disjunct.Eq(x.disjuncts[i]) {
 			return false
 		}
 	}
@@ -28,19 +37,17 @@ func (self or) Eq(other or) bool {
 }
 
 func (self or) String() string {
-	elems := make([]string, 0)
-	for _, v := range self.disjuncts {
-		elems = append(elems, fmt.Sprint(v))
-	}
-	return fmt.Sprintf("Or(%v)", strings.Join(elems, ", "))
+	result := fmt.Sprint(self.disjuncts)
+	return fmt.Sprintf("Or(%v)", result)[1 : len(result)-1]
 }
 
 func (self or) Evaluate(model map[string]bool) bool {
-	res := false
 	for _, disjunct := range self.disjuncts {
-		res = res || disjunct.Evaluate(model)
+		if disjunct.Evaluate(model) {
+			return true
+		}
 	}
-	return res
+	return false
 }
 
 func (self or) Formula() string {
@@ -55,11 +62,11 @@ func (self or) Formula() string {
 }
 
 func (self or) Symbols() map[string]bool {
-	res := make(map[string]bool)
+	result := make(map[string]bool)
 	for _, disjunct := range self.disjuncts {
-		for k, v := range disjunct.Symbols() {
-			res[k] = v
+		for s, value := range disjunct.Symbols() {
+			result[s] = value
 		}
 	}
-	return res
+	return result
 }

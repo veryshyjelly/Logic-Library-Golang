@@ -4,6 +4,7 @@ type Sentence interface {
 	Evaluate(map[string]bool) bool
 	Formula() string
 	Symbols() map[string]bool
+	Eq(interface{}) bool
 }
 
 func Parenthesize(s string) string {

@@ -14,8 +14,15 @@ func Not(operand Sentence) *not {
 	return self
 }
 
-func (self not) Eq(other not) bool {
-	return self.operand == other.operand
+func (self not) Eq(other interface{}) bool {
+	switch other.(type) {
+	case not:
+		return self.operand.Eq(other.(not).operand)
+	case *not:
+		return self.operand.Eq(other.(*not).operand)
+	default:
+		return false
+	}
 }
 
 func (self not) String() string {
