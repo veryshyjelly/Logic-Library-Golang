@@ -2,6 +2,7 @@ package main
 
 import (
 	. "Knowledge/logic"
+	. "Knowledge/modelCheck"
 	"fmt"
 )
 

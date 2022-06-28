@@ -1,4 +1,4 @@
-package sentence
+package logic
 
 type Sentence interface {
 	Evaluate(map[string]bool) bool

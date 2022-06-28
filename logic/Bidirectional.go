@@ -1,16 +1,15 @@
 package logic
 
 import (
-	"Knowledge/logic/sentence"
 	"fmt"
 )
 
 type bidirectional struct {
-	left  sentence.Sentence
-	right sentence.Sentence
+	left  Sentence
+	right Sentence
 }
 
-func Bidirectional(left, right sentence.Sentence) *bidirectional {
+func Bidirectional(left, right Sentence) *bidirectional {
 	self := new(bidirectional)
 	self.left, self.right = left, right
 	return self
@@ -29,8 +28,8 @@ func (self bidirectional) Evaluate(model map[string]bool) bool {
 }
 
 func (self bidirectional) Formula() string {
-	left := sentence.Parenthesize(fmt.Sprint(self.left))
-	right := sentence.Parenthesize(fmt.Sprint(self.right))
+	left := Parenthesize(fmt.Sprint(self.left))
+	right := Parenthesize(fmt.Sprint(self.right))
 	return left + " <=> " + right
 }
 

@@ -1,16 +1,15 @@
 package logic
 
 import (
-	"Knowledge/logic/sentence"
 	"fmt"
 )
 
 type implication struct {
-	antecedent sentence.Sentence
-	consequent sentence.Sentence
+	antecedent Sentence
+	consequent Sentence
 }
 
-func Implication(antecedent, consequent sentence.Sentence) *implication {
+func Implication(antecedent, consequent Sentence) *implication {
 	self := new(implication)
 	self.antecedent, self.consequent = antecedent, consequent
 	return self
@@ -29,8 +28,8 @@ func (self implication) Evaluate(model map[string]bool) bool {
 }
 
 func (self implication) Formula() string {
-	antecedent := sentence.Parenthesize(self.antecedent.Formula())
-	consequent := sentence.Parenthesize(self.consequent.Formula())
+	antecedent := Parenthesize(self.antecedent.Formula())
+	consequent := Parenthesize(self.consequent.Formula())
 	return antecedent + " => " + consequent
 }
 

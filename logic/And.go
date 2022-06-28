@@ -1,22 +1,21 @@
 package logic
 
 import (
-	"Knowledge/logic/sentence"
 	"fmt"
 	"strings"
 )
 
 type and struct {
-	conjuncts []sentence.Sentence
+	conjuncts []Sentence
 }
 
-func And(conjuncts ...sentence.Sentence) *and {
+func And(conjuncts ...Sentence) *and {
 	self := new(and)
 	self.conjuncts = conjuncts
 	return self
 }
 
-func (self and) eq(other and) bool {
+func (self and) Eq(other and) bool {
 	if len(self.conjuncts) != len(other.conjuncts) {
 		return false
 	}
@@ -36,7 +35,7 @@ func (self and) String() string {
 	return fmt.Sprintf("Add(%v)", strings.Join(elems, ", "))
 }
 
-func (self *and) Add(conjunct sentence.Sentence) {
+func (self *and) Add(conjunct Sentence) {
 	self.conjuncts = append(self.conjuncts, conjunct)
 }
 
@@ -54,7 +53,7 @@ func (self and) Formula() string {
 	}
 	elems := make([]string, 0)
 	for _, conjunct := range self.conjuncts {
-		elems = append(elems, sentence.Parenthesize(conjunct.Formula()))
+		elems = append(elems, Parenthesize(conjunct.Formula()))
 	}
 	return strings.Join(elems, " ∧ ")
 }

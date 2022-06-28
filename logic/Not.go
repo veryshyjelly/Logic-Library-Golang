@@ -1,15 +1,14 @@
 package logic
 
 import (
-	"Knowledge/logic/sentence"
 	"fmt"
 )
 
 type not struct {
-	operand sentence.Sentence
+	operand Sentence
 }
 
-func Not(operand sentence.Sentence) *not {
+func Not(operand Sentence) *not {
 	self := new(not)
 	self.operand = operand
 	return self
@@ -28,7 +27,7 @@ func (self not) Evaluate(model map[string]bool) bool {
 }
 
 func (self not) Formula() string {
-	return "¬" + sentence.Parenthesize(self.operand.Formula())
+	return "¬" + Parenthesize(self.operand.Formula())
 }
 
 func (self not) Symbols() map[string]bool {

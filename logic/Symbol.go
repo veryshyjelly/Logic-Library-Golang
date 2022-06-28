@@ -14,7 +14,7 @@ func Symbol(name string) *symbol {
 	return self
 }
 
-func (self symbol) eq(other symbol) bool {
+func (self symbol) Eq(other symbol) bool {
 	return self.name == other.name
 }
 

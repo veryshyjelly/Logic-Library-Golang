@@ -1,16 +1,15 @@
 package logic
 
 import (
-	"Knowledge/logic/sentence"
 	"fmt"
 	"strings"
 )
 
 type or struct {
-	disjuncts []sentence.Sentence
+	disjuncts []Sentence
 }
 
-func Or(disjuncts ...sentence.Sentence) *or {
+func Or(disjuncts ...Sentence) *or {
 	self := new(or)
 	self.disjuncts = disjuncts
 	return self
@@ -50,7 +49,7 @@ func (self or) Formula() string {
 	}
 	elems := make([]string, 0)
 	for _, disjunct := range self.disjuncts {
-		elems = append(elems, sentence.Parenthesize(disjunct.Formula()))
+		elems = append(elems, Parenthesize(disjunct.Formula()))
 	}
 	return strings.Join(elems, " ∨ ")
 }
