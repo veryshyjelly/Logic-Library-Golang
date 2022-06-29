@@ -31,7 +31,7 @@ func (self bidirectional) String() string {
 }
 
 func (self bidirectional) Evaluate(model map[string]bool) bool {
-	return (self.left.Evaluate(model) && self.right.Evaluate(model)) || (!self.left.Evaluate(model) && !self.right.Evaluate(model))
+	return self.left.Evaluate(model) == self.right.Evaluate(model)
 }
 
 func (self bidirectional) Formula() string {

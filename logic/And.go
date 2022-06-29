@@ -37,8 +37,11 @@ func (self and) Eq(other interface{}) bool {
 }
 
 func (self and) String() string {
-	result := fmt.Sprint(self.conjuncts)
-	return fmt.Sprintf("And(%v)", result)[1 : len(result)-1]
+	result := make([]string, len(self.conjuncts))
+	for k, conjunct := range self.conjuncts {
+		result[k] = fmt.Sprint(conjunct)
+	}
+	return fmt.Sprintf("And(%v)", strings.Join(result, ", "))
 }
 
 func (self *and) Add(conjunct Sentence) {

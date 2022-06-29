@@ -5,14 +5,7 @@ import (
 )
 
 func ModelCheck(knowledge, query logic.Sentence) bool {
-	symbols := make(map[string]bool)
-	for k, v := range knowledge.Symbols() {
-		symbols[k] = v
-	}
-	for k, v := range query.Symbols() {
-		symbols[k] = v
-	}
-
+	symbols := logic.Union(knowledge.Symbols(), query.Symbols())
 	return checkAll(knowledge, query, symbols, map[string]bool{})
 }
 

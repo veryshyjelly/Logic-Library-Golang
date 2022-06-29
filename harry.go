@@ -17,15 +17,20 @@ func main() {
 	knowledge := And(
 		Implication(Not(rain), hagrid),
 		Or(hagrid, dumbldore),
-		Not(And(hagrid, dumbldore)),
-		dumbldore,
 	)
 
-	one := Or(rain, hagrid)
-	two := Or(rain, hagrid)
+	knowledge.Add(Or(hagrid, dumbldore))
+	knowledge.Add(Not(And(hagrid, dumbldore)))
+	knowledge.Add(dumbldore)
 
-	fmt.Println(one.Eq(two))
+	//
+	//one := Or(rain, hagrid)
+	//two := Or(rain, hagrid)
+	//
+	//fmt.Println(one.Eq(two))
 
 	fmt.Println(knowledge.Formula())
 	fmt.Println(modelCheck.ModelCheck(knowledge, rain))
+	fmt.Println(modelCheck.ModelCheck(knowledge, hagrid))
+	fmt.Println(modelCheck.ModelCheck(knowledge, dumbldore))
 }

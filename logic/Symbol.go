@@ -34,8 +34,8 @@ func (self symbol) Evaluate(model map[string]bool) bool {
 		return v
 	} else {
 		log.Fatalf("variable %s not in model\n", self.name)
+		return false
 	}
-	return false
 }
 
 func (self symbol) Formula() string {

@@ -37,8 +37,12 @@ func (self or) Eq(other interface{}) bool {
 }
 
 func (self or) String() string {
-	result := fmt.Sprint(self.disjuncts)
-	return fmt.Sprintf("Or(%v)", result)[1 : len(result)-1]
+	result := make([]string, len(self.disjuncts))
+	for k, disjunct := range self.disjuncts {
+		result[k] = fmt.Sprint(disjunct)
+	}
+	return fmt.Sprintf("And(%v)", strings.Join(result, ", "))
+
 }
 
 func (self or) Evaluate(model map[string]bool) bool {
